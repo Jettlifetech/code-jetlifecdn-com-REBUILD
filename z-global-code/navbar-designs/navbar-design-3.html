@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Space Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --space-dark: #0a0a0a;
+            --space-purple: #1a0b2e;
+            --space-blue: #16213e;
+            --space-cyan: #0f3460;
+            --space-accent: #533483;
+            --space-glow: #e94560;
+            --space-light: #f0f0f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--space-dark) 0%, var(--space-purple) 50%, var(--space-blue) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(26, 11, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(233, 69, 96, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(233, 69, 96, 0.1), 
+                rgba(83, 52, 131, 0.1), 
+                rgba(15, 52, 96, 0.1),
+                rgba(22, 33, 62, 0.1)
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar-brand {
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.6));
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--space-light) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .navbar-nav .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--space-glow), var(--space-accent));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .navbar-nav .nav-link:hover::before {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--space-glow) !important;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* Dropdown Styles */
+        .dropdown-menu {
+            background: rgba(26, 11, 46, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.3s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            color: var(--space-light) !important;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dropdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(233, 69, 96, 0.2), 
+                transparent
+            );
+            transition: left 0.5s ease;
+        }
+
+        .dropdown-item:hover::before {
+            left: 100%;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(233, 69, 96, 0.1);
+            color: var(--space-glow) !important;
+            transform: translateX(5px);
+            box-shadow: inset 5px 0 0 var(--space-glow);
+        }
+
+        /* Multi-level Dropdown */
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: 0;
+            margin-left: 5px;
+        }
+
+        .dropdown-submenu:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Mobile Toggle */
+        .navbar-toggler {
+            border: none;
+            padding: 4px 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            background-image: none;
+            width: 30px;
+            height: 30px;
+            position: relative;
+        }
+
+        .navbar-toggler-icon::before,
+        .navbar-toggler-icon::after,
+        .navbar-toggler-icon {
+            background: var(--space-light);
+        }
+
+        .navbar-toggler-icon::before,
+        .navbar-toggler-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            left: 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler-icon::before {
+            top: -8px;
+        }
+
+        .navbar-toggler-icon::after {
+            top: 8px;
+        }
+
+        .navbar-toggler:hover .navbar-toggler-icon,
+        .navbar-toggler:hover .navbar-toggler-icon::before,
+        .navbar-toggler:hover .navbar-toggler-icon::after {
+            background: var(--space-glow);
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.6);
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 100px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(233, 69, 96, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(83, 52, 131, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--space-dark) 0%, var(--space-purple) 100%);
+            color: var(--space-light);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--space-glow), var(--space-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.3)); }
+            to { filter: drop-shadow(0 0 30px rgba(233, 69, 96, 0.6)); }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--space-light);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section-content {
+            color: rgba(240, 240, 240, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991px) {
+            .navbar-nav {
+                padding: 20px 0;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 10px 0;
+                margin: 5px 0;
+            }
+
+            .dropdown-menu {
+                position: static;
+                background: rgba(15, 52, 96, 0.9);
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                margin-top: 0;
+            }
+
+            .dropdown-submenu .dropdown-menu {
+                position: static;
+                margin-left: 20px;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .navbar-brand img {
+                height: 35px;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--space-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--space-glow), var(--space-accent));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, var(--space-accent), var(--space-glow));
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <img src="https://code.jetlifecdn.com/z_global-elements/jettlife-tech-white-text-menu.png" alt="Logo" class="img-fluid">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#web-dev">Web Development</a></li>
+                            <li><a class="dropdown-item" href="#mobile-apps">Mobile Apps</a></li>
+                            <li><a class="dropdown-item" href="#ui-ux">UI/UX Design</a></li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">More Services</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#seo">SEO Optimization</a></li>
+                                    <li><a class="dropdown-item" href="#marketing">Digital Marketing</a></li>
+                                    <li><a class="dropdown-item" href="#cloud">Cloud Solutions</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Portfolio
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#recent">Recent Projects</a></li>
+                            <li><a class="dropdown-item" href="#case-studies">Case Studies</a></li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Technologies</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#frontend">Frontend</a></li>
+                                    <li><a class="dropdown-item" href="#backend">Backend</a></li>
+                                    <li><a class="dropdown-item" href="#database">Database</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h1 class="hero-title">Welcome to the Future</h1>
+                    <p class="lead">Experience the power of space-themed design with our advanced Bootstrap 5 navbar featuring cosmic animations and responsive multi-level dropdowns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title">About Our Space Navigation</h2>
+                    <div class="section-content">
+                        <p>This futuristic navbar combines the latest Bootstrap 5 features with advanced CSS animations to create an immersive space experience. The design features animated gradients, hover effects, and smooth transitions that make navigation feel like exploring the cosmos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title">Our Services</h2>
+                    <div class="section-content">
+                        <p>Explore our comprehensive range of services through the interactive dropdown menus in the navigation bar. Each service category features sub-menus for detailed navigation options.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title">Portfolio Showcase</h2>
+                    <div class="section-content">
+                        <p>Our portfolio section demonstrates the multi-level dropdown functionality with smooth animations and space-themed styling. Navigate through different project categories using the dropdown menus.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title">Contact Us</h2>
+                    <div class="section-content">
+                        <p>Ready to launch your project into space? Contact us to discuss how we can help you create stunning, responsive web experiences with advanced animations and modern design principles.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Multi-level dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownSubmenus = document.querySelectorAll('.dropdown-submenu');
+            
+            dropdownSubmenus.forEach(function(element) {
+                element.addEventListener('mouseenter', function() {
+                    const submenu = this.querySelector('.dropdown-menu');
+                    if (submenu) {
+                        submenu.style.display = 'block';
+                    }
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    const submenu = this.querySelector('.dropdown-menu');
+                    if (submenu) {
+                        submenu.style.display = 'none';
+                    }
+                });
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Navbar background opacity on scroll
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.background = 'rgba(26, 11, 46, 0.98)';
+                } else {
+                    navbar.style.background = 'rgba(26, 11, 46, 0.95)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
