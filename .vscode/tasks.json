@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Open File Search Tool",
+			"type": "shell",
+			"command": "cd /var/www/code2.jetlifecdn.com/terminal-tools/jettlife-file-search && python3 -m http.server 8080",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

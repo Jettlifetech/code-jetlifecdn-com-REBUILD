@@ -77,7 +77,7 @@ function addButtonAnimations() {
 // Perform search simulation
 function performSearch() {
     const searchTerm = $('#searchTerm').val().trim();
-    const searchFolder = $('#searchFolder').val().trim();
+    let searchFolder = validateSearchFolder(); // Validate and normalize the folder path
     
     if (!searchTerm) {
         alert('Please enter a search term.');
@@ -115,26 +115,43 @@ function performSearch() {
 
 // Generate mock search results
 function generateMockResults(searchTerm, searchFolder) {
-    const basePath = searchFolder || '/home/user';
-    const extensions = ['.txt', '.js', '.html', '.css', '.json', '.md', '.log', '.config'];
-    const folders = ['documents', 'downloads', 'projects', 'config', 'logs', 'backup'];
+    const basePath = searchFolder || '/var/www/';
+    const extensions = ['.txt', '.js', '.html', '.css', '.json', '.md', '.log', '.config', '.php', '.py'];
+    const folders = ['documents', 'downloads', 'projects', 'config', 'logs', 'backup', 'uploads', 'assets', 'includes'];
     
     const results = [];
-    const totalFiles = Math.floor(Math.random() * 50) + 20; // 20-70 files searched
-    const foundFiles = Math.floor(Math.random() * 15) + 5; // 5-20 files found
+    const totalFiles = Math.floor(Math.random() * 80) + 30; // 30-110 files searched
+    const foundFiles = Math.floor(Math.random() * 20) + 8; // 8-28 files found
     
-    // Generate found files
+    // Generate found files and folders
     for (let i = 0; i < foundFiles; i++) {
         const folder = folders[Math.floor(Math.random() * folders.length)];
-        const extension = extensions[Math.floor(Math.random() * extensions.length)];
-        const fileName = `${searchTerm.toLowerCase()}_${i + 1}${extension}`;
-        const fullPath = `${basePath}/${folder}/${fileName}`;
+        const isFolder = Math.random() < 0.3; // 30% chance of being a folder
+        
+        let fileName, fullPath, size;
+        
+        if (isFolder) {
+            // Generate folder result
+            fileName = `${searchTerm.toLowerCase()}_folder_${i + 1}`;
+            fullPath = `${basePath}${folder}/${fileName}/`;
+            size = 'Folder';
+        } else {
+            // Generate file result
+            const extension = extensions[Math.floor(Math.random() * extensions.length)];
+            fileName = `${searchTerm.toLowerCase()}_${i + 1}${extension}`;
+            fullPath = `${basePath}${folder}/${fileName}`;
+            size = (Math.random() * 1000).toFixed(2) + ' KB';
+        }
+        
+        // Fix double slashes in path
+        fullPath = fullPath.replace(/\/+/g, '/');
         
         results.push({
             fullPath: fullPath,
             fileName: fileName,
-            size: (Math.random() * 1000).toFixed(2) + ' KB',
-            modified: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toLocaleDateString()
+            size: size,
+            modified: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+            isFolder: isFolder
         });
     }
     
@@ -152,33 +169,38 @@ function generateMockResults(searchTerm, searchFolder) {
 function displayResults(results, searchTerm, searchFolder) {
     // Update search stats
     const statsHtml = `
-        <h4><i class="fas fa-chart-bar me-2"></i>Search Statistics</h4>
+       <div class="DaineDvorak_CustomCSS03">
+  <div class="container-flex border rounded p-3 m-3" style="background-color: rgba(0, 0, 0, 0.5);">
+   <h4><i class="fas fa-chart-bar me-2"></i>Search Statistics</h4>
+    <hr>
         <div class="row">
             <div class="col-md-6">
                 <div class="stat-item">
-                    <span>Search Term:</span>
+                    <span class="fw-bold">Search Term:</span>
                     <span class="stat-value">${results.searchTerm}</span>
                 </div>
                 <div class="stat-item">
-                    <span>Search Folder:</span>
+                    <span class="fw-bold">Search Folder:</span>
                     <span class="stat-value">${results.searchFolder || 'All directories'}</span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="stat-item">
-                    <span>Total Files Searched:</span>
+                    <span class="fw-bold">Total Files Searched:</span>
                     <span class="stat-value">${results.totalFilesSearched}</span>
                 </div>
                 <div class="stat-item">
-                    <span>Files Found:</span>
+                    <span class="fw-bold">Files Found:</span>
                     <span class="stat-value">${results.filesFound}</span>
                 </div>
                 <div class="stat-item">
-                    <span>Search Time:</span>
+                    <span class="fw-bold">Search Time:</span>
                     <span class="stat-value">${results.searchTime}</span>
                 </div>
             </div>
         </div>
+  </div>
+    </div>
     `;
     
     $('#searchStats').html(statsHtml);
@@ -189,21 +211,127 @@ function displayResults(results, searchTerm, searchFolder) {
     
     if (results.results.length > 0) {
         results.results.forEach(function(file, index) {
+            // Create URL for "Open File" button - replace /var/www/ with https://
+            const webUrl = file.fullPath.replace(/^\/var\/www\//, 'https://');
+            
+            // Extract directory path for better display
+            const pathParts = file.fullPath.split('/');
+            let fileName, directoryPath;
+            
+            if (file.isFolder) {
+                // For folders, the last part might be empty due to trailing slash
+                fileName = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
+                const folderPathParts = pathParts.slice(0, -2);
+                directoryPath = folderPathParts.join('/') || '/';
+            } else {
+                fileName = pathParts.pop();
+                directoryPath = pathParts.join('/') || '/';
+            }
+            
             const row = `
                 <tr style="animation-delay: ${index * 0.1}s">
-                    <td class="text-break">${file.fullPath}</td>
-                    <td>${file.fileName}</td>
+                    <td class="file-path-cell">
+                        <div class="file-path-container">
+                            <div class="full-path-display">
+                                <code class="path-code">${file.fullPath}</code>
+                                <button class="btn btn-xs copy-path-btn" 
+                                        data-path="${file.fullPath}"
+                                        title="Copy full path to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="path-breakdown">
+                                <span class="directory-path text-muted">${directoryPath}/</span>
+                                <span class="file-name-highlight">
+                                    <i class="fas fa-${file.isFolder ? 'folder' : 'file'} me-1"></i>
+                                    ${fileName}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm open-file-btn" 
+                                data-url="${webUrl}" 
+                                data-path="${file.fullPath}"
+                                title="Open file in new tab: ${webUrl}">
+                            <i class="fas fa-external-link-alt me-1"></i>Open
+                        </button>
+                    </td>
+                    <td>${file.fileName}${file.isFolder ? ' <span class="badge bg-info">Folder</span>' : ''}</td>
                     <td>${file.size}</td>
                     <td>${file.modified}</td>
                 </tr>
             `;
             tableBody.append(row);
         });
+        
+        // Add click handlers for "Open File" buttons
+        $('.open-file-btn').on('click', function() {
+            const url = $(this).data('url');
+            const path = $(this).data('path');
+            
+            // Show loading state on button
+            const $btn = $(this);
+            const originalText = $btn.html();
+            $btn.html('<i class="fas fa-spinner fa-spin me-1"></i>Opening...');
+            $btn.prop('disabled', true);
+            
+            // Copy file path to clipboard
+            copyToClipboard(path);
+            
+            // Show notification that path was copied
+            showNotification(`File path copied: ${path}`, 'info');
+            
+            // Open URL in new tab
+            try {
+                window.open(url, '_blank');
+                
+                // Show success notification
+                setTimeout(() => {
+                    showNotification(`Opening: ${url}`, 'success');
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error opening file:', error);
+                showNotification('Error opening file. Please check the URL.', 'error');
+            }
+            
+            // Reset button state
+            setTimeout(() => {
+                $btn.html(originalText);
+                $btn.prop('disabled', false);
+            }, 1000);
+        });
+        
+        // Add click handlers for "Copy Path" buttons
+        $('.copy-path-btn').on('click', function(e) {
+            e.stopPropagation();
+            const path = $(this).data('path');
+            const $btn = $(this);
+            const originalIcon = $btn.find('i').attr('class');
+            
+            // Copy to clipboard
+            copyToClipboard(path);
+            
+            // Visual feedback
+            $btn.find('i').attr('class', 'fas fa-check');
+            $btn.addClass('copied');
+            
+            // Show notification
+            showNotification(`Full path copied: ${path}`, 'success');
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                $btn.find('i').attr('class', originalIcon);
+                $btn.removeClass('copied');
+            }, 2000);
+        });
+        
     } else {
         tableBody.append(`
             <tr>
-                <td colspan="4" class="text-center text-muted">
-                    <i class="fas fa-search me-2"></i>No files found matching your search criteria.
+                <td colspan="5" class="text-center text-muted">
+                    <i class="fas fa-search me-2"></i>No files or folders found matching your search criteria.
                 </td>
             </tr>
         `);
@@ -234,11 +362,13 @@ function downloadReport() {
     csvContent += '\n';
     
     // Add CSV headers
-    csvContent += 'File Path,File Name,Size,Modified Date\n';
+    csvContent += 'File Path,Open URL,File Name,Size,Modified Date,Type\n';
     
     // Add results data
     results.results.forEach(function(file) {
-        csvContent += `"${file.fullPath}","${file.fileName}","${file.size}","${file.modified}"\n`;
+        const webUrl = file.fullPath.replace(/^\/var\/www\//, 'https://');
+        const fileType = file.isFolder ? 'Folder' : 'File';
+        csvContent += `"${file.fullPath}","${webUrl}","${file.fileName}","${file.size}","${file.modified}","${fileType}"\n`;
     });
     
     // Create and download file
@@ -260,7 +390,7 @@ function downloadReport() {
 function resetForm() {
     // Clear form fields
     $('#searchTerm').val('');
-    $('#searchFolder').val('');
+    $('#searchFolder').val('/var/www/'); // Reset to default value
     
     // Hide results section
     $('#resultsSection').slideUp(500);
@@ -430,3 +560,84 @@ $(document).on('keydown', function(e) {
         $('.notification').fadeOut(300);
     }
 });
+
+// Add real-time path validation for search folder input
+$('#searchFolder').on('blur', function() {
+    validateSearchFolder();
+});
+
+// Add path normalization on input
+$('#searchFolder').on('input', function() {
+    let value = $(this).val();
+    // Real-time cleanup of multiple slashes while typing
+    if (value.includes('//')) {
+        $(this).val(value.replace(/\/+/g, '/'));
+    }
+});
+
+// Copy text to clipboard
+function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+        // Use modern clipboard API
+        navigator.clipboard.writeText(text).catch(function(err) {
+            console.error('Failed to copy text: ', err);
+            fallbackCopyTextToClipboard(text);
+        });
+    } else {
+        // Fallback for older browsers
+        fallbackCopyTextToClipboard(text);
+    }
+}
+
+// Fallback clipboard copy method
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// Normalize file path by removing duplicate slashes
+function normalizePath(path) {
+    if (!path) return path;
+    return path.replace(/\/+/g, '/');
+}
+
+// Validate and normalize search folder input
+function validateSearchFolder() {
+    const $searchFolder = $('#searchFolder');
+    let folderPath = $searchFolder.val().trim();
+    
+    if (folderPath) {
+        // Normalize the path
+        folderPath = normalizePath(folderPath);
+        
+        // Ensure it starts with /
+        if (!folderPath.startsWith('/')) {
+            folderPath = '/' + folderPath;
+        }
+        
+        // Ensure it ends with /
+        if (!folderPath.endsWith('/')) {
+            folderPath = folderPath + '/';
+        }
+        
+        // Update the input field
+        $searchFolder.val(folderPath);
+    }
+    
+    return folderPath;
+}

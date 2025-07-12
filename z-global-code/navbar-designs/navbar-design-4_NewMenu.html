@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space-Themed Navbar</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --space-primary: #0a0a23;
+            --space-secondary: #1a1a3e;
+            --nebula-purple: #6b46c1;
+            --nebula-blue: #3b82f6;
+            --nebula-pink: #ec4899;
+            --galaxy-cyan: #06b6d4;
+            --star-white: #f1f5f9;
+            --cosmic-glow: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, 
+                var(--space-primary) 0%, 
+                var(--space-secondary) 35%, 
+                #2d1b69 70%, 
+                #0f0f35 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--star-white);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Stars */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, var(--star-white), transparent),
+                radial-gradient(2px 2px at 40px 70px, var(--galaxy-cyan), transparent),
+                radial-gradient(1px 1px at 90px 40px, var(--nebula-pink), transparent),
+                radial-gradient(1px 1px at 130px 80px, var(--cosmic-glow), transparent),
+                radial-gradient(2px 2px at 160px 30px, var(--star-white), transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 20s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes sparkle {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-100px); }
+        }
+
+        /* Space Navbar Styles */
+        .space-navbar {
+            background: linear-gradient(90deg, 
+                rgba(10, 10, 35, 0.95) 0%,
+                rgba(107, 70, 193, 0.85) 25%,
+                rgba(59, 130, 246, 0.75) 50%,
+                rgba(236, 72, 153, 0.85) 75%,
+                rgba(10, 10, 35, 0.95) 100%);
+            background-size: 400% 100%;
+            animation: cosmic-flow 15s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 4px 20px rgba(107, 70, 193, 0.4);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .space-navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(139, 92, 246, 0.1) 50%, 
+                transparent 70%);
+            animation: shimmer 3s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes cosmic-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Logo Styles */
+        .navbar-brand {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--star-white) !important;
+            text-decoration: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo-image {
+            height: 40px;
+            width: auto;
+            margin-right: 10px;
+            filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.7));
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover .logo-image {
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 1));
+            transform: scale(1.1);
+        }
+
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--nebula-blue), var(--cosmic-glow), var(--nebula-pink));
+            transition: width 0.4s ease;
+        }
+
+        .navbar-brand:hover::after {
+            width: 100%;
+        }
+
+        /* Navigation Links */
+        .navbar-nav .nav-link {
+            color: var(--star-white) !important;
+            font-weight: 500;
+            font-size: 1rem;
+            margin: 0 5px;
+            padding: 10px 15px !important;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar-nav .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(139, 92, 246, 0.3), 
+                transparent);
+            transition: left 0.5s ease;
+        }
+
+        .navbar-nav .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: linear-gradient(135deg, 
+                rgba(107, 70, 193, 0.3), 
+                rgba(59, 130, 246, 0.2));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+            color: var(--galaxy-cyan) !important;
+        }
+
+        /* Dropdown Styles */
+        .dropdown-menu {
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 35, 0.95), 
+                rgba(26, 26, 62, 0.9));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(107, 70, 193, 0.5);
+            margin-top: 5px;
+        }
+
+        .dropdown-item {
+            color: var(--star-white) !important;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            margin: 2px 5px;
+            position: relative;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(90deg, 
+                rgba(107, 70, 193, 0.4), 
+                rgba(59, 130, 246, 0.3));
+            color: var(--galaxy-cyan) !important;
+            transform: translateX(5px);
+        }
+
+        /* Multi-level Dropdown */
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+            margin-left: -1px;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu > .dropdown-item::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            float: right;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-submenu:hover > .dropdown-item::after {
+            transform: rotate(90deg);
+        }
+
+        /* Mobile Menu Styles */
+        .navbar-toggler {
+            border: 2px solid var(--cosmic-glow);
+            border-radius: 10px;
+            padding: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler:hover {
+            background: rgba(139, 92, 246, 0.2);
+            transform: scale(1.1);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28241, 245, 249, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991px) {
+            .dropdown-submenu .dropdown-menu {
+                position: static;
+                margin-left: 20px;
+                box-shadow: none;
+                border: none;
+                background: rgba(26, 26, 62, 0.5);
+            }
+            
+            .navbar-nav .nav-link {
+                margin: 5px 0;
+            }
+        }
+
+        /* Content Styles */
+        .content-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .content-section h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            color: var(--star-white);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.7);
+        }
+
+        .content-section p {
+            font-size: 1.2rem;
+            color: rgba(241, 245, 249, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Glow Animation for Active States */
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px rgba(139, 92, 246, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(139, 92, 246, 1), 0 0 30px rgba(236, 72, 153, 0.7); }
+        }
+
+        .nav-link.active {
+            animation: glow 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg space-navbar fixed-top">
+        <div class="container-fluid">
+            <!-- Logo/Brand -->
+            <a class="navbar-brand" href="#home">
+                <img src="https://code.jetlifecdn.com/z_global-elements/jettlife-tech-white-text-menu.png" 
+                     alt="JettLife Tech" class="logo-image">
+                
+            </a>
+          <span class="d-none d-md-inline ml-4">  Custom Tools Platform</span>
+
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Menu -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Replace your current <ul class="navbar-nav ms-auto"> ... </ul> with this: -->
+<ul class="navbar-nav ms-auto">
+  <!-- Branding -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="brandingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fas fa-rocket me-1"></i> Branding
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="brandingDropdown">
+      <li><a class="dropdown-item" href="https://cdn.jetlifemedia.com/jettlife-tech-branding/" target="_blank"><i class="fas fa-bolt me-2"></i>JETTLIFE Tech Branding</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/broken-links-finder/branding.html" target="_blank"><i class="fas fa-link-broken me-2"></i>BLF Branding</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/jettlife-custom-themes/color-themes/index.php" target="_blank"><i class="fas fa-palette me-2"></i>Color Themes</a></li>
+    </ul>
+  </li>
+
+  <!-- Development Tools -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="devToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fas fa-code-branch me-1"></i> Development Tools
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="devToolsDropdown">
+      <!-- Web & Script Tools -->
+      <li class="dropdown-submenu">
+        <a class="dropdown-item" href="#"><i class="fas fa-terminal me-2"></i>Web & Script Tools</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/a_user-script-file-runner/cgi-scripts/index.php" target="_blank"><i class="fas fa-file-code me-2"></i>Custom Script Files</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/a_user-script-file-runner/cgi-scripts/pass-user-entry-to-shell-script/" target="_blank"><i class="fas fa-terminal me-2"></i>Run Shell Script?</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/bookmarklets/" target="_blank"><i class="fas fa-bookmark me-2"></i>Custom Bookmarklet Repository</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/bootstrap-webpage-templates/index.php" target="_blank"><i class="fab fa-bootstrap me-2"></i>BS Templates</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/files-index.php" target="_blank"><i class="fas fa-folder-open me-2"></i>Files Index</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/svg-font-awesome-icons/pro-6-4-2/index.php" target="_blank"><i class="fas fa-icons me-2"></i>FA Library</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/wordpress/plugins/virus-free/index.php" target="_blank"><i class="fab fa-wordpress me-2"></i>WordPress Plugins</a></li>
+        </ul>
+      </li>
+      <!-- CLI & Automation -->
+      <li class="dropdown-submenu">
+        <a class="dropdown-item" href="#"><i class="fas fa-robot me-2"></i>CLI & Automation</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/web-dev-scripts/" target="_blank"><i class="fas fa-cogs me-2"></i>Web Dev Automation Scripts</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/web-dev-scripts/2025-automation/index.php" target="_blank"><i class="fas fa-sync-alt me-2"></i>Automation Scripts</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/web-dev-scripts/gen-new-mysql-db.sh" target="_blank"><i class="fas fa-database me-2"></i>Generate New MySQL Database</a></li>
+          <li><a class="dropdown-item" href="https://code.jetlifecdn.com/web-dev-scripts/index.php" target="_blank"><i class="fas fa-server me-2"></i>Web Dev Server Scripts</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  <!-- Utilities -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="utilitiesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fas fa-toolbox me-1"></i> Utilities
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="utilitiesDropdown">
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/CLI-Script-Generators/combined-forms-final.html" target="_blank"><i class="fas fa-object-group me-2"></i>Combined Forms</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/CLI-Script-Generators/compress-and-download-folder-v3.php" target="_blank"><i class="fas fa-file-archive me-2"></i>Tar/Gzip Folder</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/CLI-Script-Generators/Linkinator-CLI-Generator-withCustomReportName.html" target="_blank"><i class="fas fa-link me-2"></i>Linkinator CLI</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/CLI-Script-Generators/Linkscanner-CLI-Generator-withCustomReportName.html" target="_blank"><i class="fas fa-search me-2"></i>Linkscanner CLI Gen.</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/custom-scripts/bulk_html_Download/downloaded_html/" target="_blank"><i class="fas fa-code me-2"></i>Extract all HTML Source Code</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/file-manipulation/de-dupe-text-files/de-dupe-text-files.html" target="_blank"><i class="fas fa-copy me-2"></i>De-Duplicate Text Files</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/json-tools/excel-schema-copy-and-parse.html" target="_blank"><i class="fas fa-file-excel me-2"></i>Fix Excel Paste Syntax</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/metadata/bulk-check-pixel-width.html" target="_blank"><i class="fas fa-ruler-horizontal me-2"></i>Bulk Check Pixel Width Of Text</a></li>
+      <li><a class="dropdown-item" href="https://code.jetlifecdn.com/Simple-Backdoor-Scanner-PHP-master/" target="_blank"><i class="fas fa-user-secret me-2"></i>PHP Backdoor Scanner</a></li>
+    </ul>
+  </li>
+
+  <!-- Career Tools -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="careerToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fas fa-briefcase me-1"></i> Career Tools
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="careerToolsDropdown">
+      <li><a class="dropdown-item" href="https://jobhunt.dainedvorak.com/" target="_blank"><i class="fas fa-lightbulb me-2"></i>Job Prompt Generator</a></li>
+      <li><a class="dropdown-item" href="https://resmume.com/builder/" target="_blank"><i class="fas fa-file-alt me-2"></i>Resume Builder Tool</a></li>
+    </ul>
+  </li>
+</ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <section class="content-section" id="home">
+            <div class="container">
+                <h1>Welcome to the Galaxy</h1>
+                <p>Experience the future of web design with our space-themed navigation system. 
+                   This responsive navbar features animated gradients, multi-level dropdowns, 
+                   and cosmic hover effects that transport your users to another dimension.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Custom JavaScript for enhanced functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Update active nav link on scroll
+            const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+            
+            function updateActiveLink() {
+                const scrollPosition = window.scrollY + 100;
+                
+                navLinks.forEach(link => {
+                    const target = document.querySelector(link.getAttribute('href'));
+                    if (target) {
+                        const targetTop = target.offsetTop;
+                        const targetBottom = targetTop + target.offsetHeight;
+                        
+                        if (scrollPosition >= targetTop && scrollPosition < targetBottom) {
+                            navLinks.forEach(l => l.classList.remove('active'));
+                            link.classList.add('active');
+                        }
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateActiveLink);
+            
+            // Close mobile menu when clicking on a link
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            const navLinks2 = document.querySelectorAll('.nav-link');
+            
+            navLinks2.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navbarCollapse.classList.contains('show')) {
+                        bootstrap.Collapse.getInstance(navbarCollapse).hide();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+<!-- End of Space-Themed Navbar Code -->
+<!-- This code creates a space-themed responsive navbar -->

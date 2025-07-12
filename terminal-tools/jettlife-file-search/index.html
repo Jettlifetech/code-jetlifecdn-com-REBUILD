@@ -36,7 +36,7 @@
             
             <!-- Navigation Menu -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+<!--                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="#">Home</a>
                     </li>
@@ -62,7 +62,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contact</a></li>
-                </ul>
+                </ul> -->
             </div>
         </div>
     </nav>
@@ -72,19 +72,19 @@
         <div class="animated-bg"></div>
         <div class="container-fluid h-100 d-flex align-items-center justify-content-center">
             <div class="content-box">
-                <h1 class="display-4 text-center mb-4">File Search Tool</h1>
-                <p class="lead text-center mb-4">Search for files across your system on <span id="current-domain"></span></p>
+                <h1 class="text-center mt-5 pt-5">DVMSv4 - Server File and Folder Search Tool</h1>
+                <p class="lead text-center mb-4">Search for files across the entire server</p>
                 
                 <!-- Search Form -->
                 <form id="searchForm" class="search-form">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="searchTerm" class="form-label">What to search for? *</label>
+                            <label for="searchTerm" class="form-label">What to search for? <br>(*Required)</label>
                             <input type="text" class="form-control" id="searchTerm" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="searchFolder" class="form-label">What folder to look in specifically? (Optional)</label>
-                            <input type="text" class="form-control" id="searchFolder" placeholder="e.g., /home/user/documents">
+                            <label for="searchFolder" class="form-label">Provide folder path to search? <br>(Optional)</label>
+                            <input type="text" class="form-control" id="searchFolder" value="/var/www/" placeholder="e.g., /var/www/mysite">
                         </div>
                     </div>
                     <div class="text-center mt-4">
@@ -116,10 +116,11 @@
                         <div id="searchStats" class="search-stats mb-4"></div>
                         
                         <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
                                     <tr>
-                                        <th>File Path</th>
+                                        <th style="min-width: 300px;">Full File Path</th>
+                                        <th>Open File</th>
                                         <th>File Name</th>
                                         <th>Size</th>
                                         <th>Modified</th>
