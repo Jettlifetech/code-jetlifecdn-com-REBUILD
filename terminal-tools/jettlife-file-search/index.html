@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JETTLIFE Tech - File Search</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts - Racing Sans One -->
+    <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="https://code.jetlifecdn.com/jettlife-custom-themes/logo/jettlife-tech-white-text-menu.png" 
+                     alt="JETTLIFE Tech Logo" class="navbar-logo" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                <span class="navbar-brand-text" style="display: none;">JETTLIFE Tech</span>
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Menu -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Web Development</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Frontend</a></li>
+                                    <li><a class="dropdown-item" href="#">Backend</a></li>
+                                    <li><a class="dropdown-item" href="#">Full Stack</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Mobile Apps</a></li>
+                            <li><a class="dropdown-item" href="#">Consulting</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron-container">
+        <div class="animated-bg"></div>
+        <div class="container-fluid h-100 d-flex align-items-center justify-content-center">
+            <div class="content-box">
+                <h1 class="display-4 text-center mb-4">File Search Tool</h1>
+                <p class="lead text-center mb-4">Search for files across your system on <span id="current-domain"></span></p>
+                
+                <!-- Search Form -->
+                <form id="searchForm" class="search-form">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="searchTerm" class="form-label">What to search for? *</label>
+                            <input type="text" class="form-control" id="searchTerm" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="searchFolder" class="form-label">What folder to look in specifically? (Optional)</label>
+                            <input type="text" class="form-control" id="searchFolder" placeholder="e.g., /home/user/documents">
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-search me-2"></i>Search Files
+                        </button>
+                        <button type="button" id="resetBtn" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-refresh me-2"></i>Reset All
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="results-section" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="results-box">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3><i class="fas fa-chart-line me-2"></i>Search Results</h3>
+                            <button id="downloadBtn" class="btn btn-success">
+                                <i class="fas fa-download me-2"></i>Download Report
+                            </button>
+                        </div>
+                        
+                        <div id="searchStats" class="search-stats mb-4"></div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>File Path</th>
+                                        <th>File Name</th>
+                                        <th>Size</th>
+                                        <th>Modified</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="text-center">
+                <p class="mb-0">
+                    Created By: <a href="https://dainedvorak.com" target="_blank" class="footer-link">Daine Dvorak</a> 
+                    d.b.a. JETTLIFE Tech&copy; <span id="currentYear"></span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="app.js"></script>
+</body>
+</html>

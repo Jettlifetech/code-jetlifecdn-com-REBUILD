@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jettlife Tech - File Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="https://code.jetlifecdn.com/jettlife-custom-themes/logo/jettlife-tech-white-text-menu.png" alt="Jettlife Tech Logo" class="img-fluid">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Web Design</a></li>
+                            <li class="nav-item dropend">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="multilevelDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Web Development
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="multilevelDropdownMenu">
+                                    <li><a class="dropdown-item" href="#">Frontend</a></li>
+                                    <li><a class="dropdown-item" href="#">Backend</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="#">SEO</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="jumbotron-animated d-flex align-items-center justify-content-center text-center">
+        <div class="jumbotron-content">
+            <h1 class="display-4">Placeholder</h1>
+            <p class="lead" id="subheading-text">This is a placeholder on <span id="domain-name">your domain</span>.</p>
+            <hr class="my-4">
+            <form id="search-form">
+                <div class="mb-3">
+                    <label for="search-query" class="form-label">What to search for? <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="search-query" required>
+                </div>
+                <div class="mb-3">
+                    <label for="search-folder" class="form-label">What folder to look in? (Optional)</label>
+                    <input type="text" class="form-control" id="search-folder" placeholder="e.g., /var/www/html">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Search Now</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="results-section" class="container mt-5 d-none">
+        <h2>Search Results</h2>
+        <pre id="results-output">Searching...</pre>
+        <button id="download-report" class="btn btn-secondary">Download Report</button>
+        <button id="reset-all" class="btn btn-danger">Reset All</button>
+    </div>
+
+
+    <footer class="footer mt-auto py-3 bg-black text-white text-center">
+        <div class="container-fluid">
+            <span>Created By: <a href="https://dainedvorak.com" target="_blank">Daine Dvorak</a> d.b.a. JETTLIFE Tech&#169; <span id="year"></span></span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+</html>
